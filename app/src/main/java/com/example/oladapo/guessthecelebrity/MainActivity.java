@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -98,20 +99,23 @@ public class MainActivity extends AppCompatActivity {
             try {
 
                 url = new URL(urls[0]);
+                Log.i("RES1", String.valueOf(url));
 
-                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection = (HttpURLConnection)url.openConnection();
 
                 InputStream in = urlConnection.getInputStream();
 
                 InputStreamReader reader = new InputStreamReader(in);
 
                 int data = reader.read();
+                Log.i("RES1", String.valueOf(data));
 
                 while (data != -1) {
 
-                    char current = (char) data;
+                    char current =(char) data;
 
                     result += current;
+                    Log.i("RES1", String.valueOf(data));
 
                     data = reader.read();
 
@@ -123,10 +127,12 @@ public class MainActivity extends AppCompatActivity {
             catch (Exception e) {
 
                 e.printStackTrace();
+                Log.e("ERRORrrr", e.toString());
+
+                return "failed";
 
             }
 
-            return null;
         }
     }
 
@@ -142,11 +148,12 @@ public class MainActivity extends AppCompatActivity {
         button3 = findViewById(R.id.button4);
 
         DownloadTask task = new DownloadTask();
-        String result = null;
+        String result= null;
 
         try {
 
             result = task.execute("http://www.posh24.se/kandisar").get();
+            Log.i("RESSSS", result);
 
             String[] splitResult = result.split("<div class=\"sidebarContainer\">");
 
@@ -167,7 +174,6 @@ public class MainActivity extends AppCompatActivity {
                 celebNames.add(m.group(1));
 
             }
-
 
         } catch (InterruptedException e) {
 
